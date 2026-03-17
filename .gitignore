@@ -1,0 +1,29 @@
+# ------------------
+# Angular Frontend
+# ------------------
+/frontend/node_modules
+/frontend/dist
+/frontend/.angular
+/frontend/.vscode
+/frontend/.sass-cache
+
+# ------------------
+# Spring Boot Backend
+# ------------------
+/backend/target
+/backend/.idea
+/backend/*.iml
+/backend/*.class
+
+# Maven Wrapper logs (optional)
+**/mvnw.cmd
+**/mvnw
+**/.mvn/wrapper/maven-wrapper.jar
+
+# ------------------
+# OS / IDE
+# ------------------
+*.log
+*.DS_Store
+*.tmp
+*.swp
