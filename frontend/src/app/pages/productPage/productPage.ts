@@ -9,8 +9,8 @@ import { switchMap } from 'rxjs/operators';
   selector: 'app-product',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './product.html',
-  styleUrls: ['./product.css'],
+  templateUrl: './productPage.html',
+  styleUrls: ['./productPage.css'],
 })
 export class ProductPage {
   product = signal<Product | null>(null);

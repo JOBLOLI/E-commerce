@@ -6,8 +6,8 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-search',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './search.html',
-  styleUrl: './search.css',
+  templateUrl: './searchPage.html',
+  styleUrl: './searchPage.css',
 })
 export class SearchPage {
   query = '';

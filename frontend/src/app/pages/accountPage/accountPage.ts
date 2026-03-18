@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   selector: 'app-account',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './account.html',
-  styleUrl: './account.css',
+  templateUrl: './accountPage.html',
+  styleUrl: './accountPage.css',
 })
 export class AccountPage {}
