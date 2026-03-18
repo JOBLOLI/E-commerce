@@ -1,0 +1,11 @@
+<div class="search-page">
+  <h1>Search Products</h1>
+  <input type="text" placeholder="Search for products..." [(ngModel)]="query" />
+  <button (click)="onSearch()">Search</button>
+
+  <div *ngIf="results().length">
+    <ul>
+      <li *ngFor="let product of results()">{{ product.name }} - {{ product.price | currency }}</li>
+    </ul>
+  </div>
+</div>
