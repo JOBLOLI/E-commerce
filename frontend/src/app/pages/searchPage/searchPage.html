@@ -1,0 +1,84 @@
+<div class="container my-4">
+  <div class="row">
+    <!-- FILTERS -->
+    <div class="col-md-3">
+      <div class="card p-3 mb-3">
+        <h5>Search</h5>
+
+        <input
+          class="form-control mb-3"
+          placeholder="Search products"
+          (input)="searchTerm.set($any($event.target).value)"
+        />
+
+        <h6>Price Range</h6>
+
+        <input
+          type="number"
+          class="form-control mb-2"
+          placeholder="Min Price"
+          (input)="minPrice.set(+($any($event.target).value || 0))"
+        />
+
+        <input
+          type="number"
+          class="form-control mb-3"
+          placeholder="Max Price"
+          (input)="maxPrice.set(+($any($event.target).value || 5000))"
+        />
+
+        <h6>Minimum Rating</h6>
+
+        <input
+          type="number"
+          min="0"
+          max="5"
+          step="0.1"
+          class="form-control mb-3"
+          (input)="minRating.set(+($any($event.target).value || 0))"
+        />
+
+        <h6>Categories</h6>
+
+        <div *ngFor="let c of categories">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" (change)="toggleCategory(c.id)" />
+
+            <label class="form-check-label">
+              {{ c.name }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCTS -->
+    <div class="col-md-9">
+      <div class="row">
+        <div class="col-md-4 mb-4" *ngFor="let p of filteredProducts()">
+          <div class="card h-100">
+            <img [src]="p.imageUrl" class="card-img-top" />
+
+            <div class="card-body">
+              <h5 class="card-title">
+                {{ p.name }}
+              </h5>
+
+              <p class="card-text">
+                {{ p.description }}
+              </p>
+
+              <p>⭐ {{ p.rating }}</p>
+
+              <p>
+                <strong>{{ p.price | currency }}</strong>
+              </p>
+
+              <a [routerLink]="['/product', p.id]" class="btn btn-primary"> View Product </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

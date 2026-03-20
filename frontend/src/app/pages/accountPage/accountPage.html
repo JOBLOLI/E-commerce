@@ -1,0 +1,81 @@
+<div class="container my-5" *ngIf="user() as u">
+  <h2 class="mb-4">My Account</h2>
+
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3">
+      <div class="list-group">
+        <a class="list-group-item list-group-item-action active"> Account Overview </a>
+
+        <a routerLink="/orders" class="list-group-item list-group-item-action"> My Orders </a>
+
+        <button class="list-group-item list-group-item-action text-danger" (click)="logout()">
+          Logout
+        </button>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+      <div class="card">
+        <div class="card-header">Account Information</div>
+
+        <div class="card-body">
+          <!-- VIEW MODE -->
+          <div *ngIf="!editing()">
+            <p><strong>Username:</strong> {{ u.username }}</p>
+            <p><strong>Email:</strong> {{ u.email }}</p>
+            <p><strong>First Name:</strong> {{ u.firstName }}</p>
+            <p><strong>Last Name:</strong> {{ u.lastName }}</p>
+            <p><strong>Address:</strong> {{ u.address }}</p>
+            <p><strong>Member Since:</strong> {{ u.joinDate }}</p>
+
+            <button class="btn btn-primary" (click)="startEdit()">Edit Profile</button>
+          </div>
+
+          <!-- EDIT MODE -->
+          <div *ngIf="editing() && editUser() as e">
+            <div class="mb-3">
+              <label class="form-label">First Name</label>
+              <input
+                class="form-control"
+                [value]="e.firstName"
+                (input)="e.firstName = $any($event.target).value"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Last Name</label>
+              <input
+                class="form-control"
+                [value]="e.lastName"
+                (input)="e.lastName = $any($event.target).value"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <input
+                class="form-control"
+                [value]="e.email"
+                (input)="e.email = $any($event.target).value"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Address</label>
+              <input
+                class="form-control"
+                [value]="e.address"
+                (input)="e.address = $any($event.target).value"
+              />
+            </div>
+
+            <button class="btn btn-success me-2" (click)="saveProfile()">Save</button>
+
+            <button class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

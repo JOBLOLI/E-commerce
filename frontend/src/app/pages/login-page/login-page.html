@@ -1,0 +1,23 @@
+<div class="container my-5">
+  <h2>Login</h2>
+
+  <div class="card p-4">
+    <div class="mb-3">
+      <label class="form-label">Username</label>
+      <input class="form-control" (input)="username.set($any($event.target).value)" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        (input)="password.set($any($event.target).value)"
+      />
+    </div>
+
+    <button class="btn btn-primary" (click)="login()">Login</button>
+
+    <p class="text-danger mt-2">{{ error() }}</p>
+  </div>
+</div>

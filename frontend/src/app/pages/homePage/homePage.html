@@ -1,0 +1,17 @@
+<div class="jumbotron text-center bg-light p-5 mb-4 rounded">
+  <h1 class="display-4">Welcome to MyStore</h1>
+  <p class="lead">Find the best products!</p>
+  <a routerLink="/search" class="btn btn-primary btn-lg">Shop Now</a>
+</div>
+<div class="row px-4">
+  <div class="col-md-4 mb-3" *ngFor="let p of featuredProducts()">
+    <div class="card h-100">
+      <img [src]="p.imageUrl" class="card-img-top" [alt]="p.name" />
+      <div class="card-body">
+        <h5 class="card-title">{{ p.name }}</h5>
+        <p class="card-text">{{ p.price | currency }}</p>
+        <a [routerLink]="['/product', p.id]" class="btn btn-primary">View Product</a>
+      </div>
+    </div>
+  </div>
+</div>
