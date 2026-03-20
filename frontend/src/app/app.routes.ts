@@ -3,6 +3,7 @@ import { HomePage } from './pages/homePage/homePage';
 import { SearchPage } from './pages/searchPage/searchPage';
 import { ProductPage } from './pages/productPage/productPage';
 import { AccountPage } from './pages/accountPage/accountPage';
+import { LoginPage } from './pages/login-page/login-page';
 
 export const routes: Routes = [
   {
@@ -16,6 +17,10 @@ export const routes: Routes = [
   {
     path: 'product/:id',
     component: ProductPage,
+  },
+  {
+    path: 'login',
+    component: LoginPage,
   },
   {
     path: 'account',

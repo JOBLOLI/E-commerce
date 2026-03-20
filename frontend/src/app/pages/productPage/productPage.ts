@@ -39,6 +39,7 @@ export class ProductPage {
         name: 'Laptop',
         description: 'This is a laptop',
         price: 2499.99,
+        rating: 4.5,
         imageUrl: 'https://picsum.photos/seed/laptop/400/250',
         categories: [fakeCategories[0], fakeCategories[1]],
       });
@@ -48,6 +49,7 @@ export class ProductPage {
         name: 'Keyboard',
         description: 'This is a keyboard',
         price: 129.99,
+        rating: 4,
         imageUrl: 'https://picsum.photos/seed/keyboard/400/250',
         categories: [fakeCategories[0]],
       });
