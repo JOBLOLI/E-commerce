@@ -68,8 +68,10 @@
           <h5 class="card-title mb-3">Order Summary</h5>
 
           <div *ngFor="let item of cartItems()" class="d-flex justify-content-between mb-2">
-            <span>{{ item.name }}</span>
-            <span>{{ item.price | currency }}</span>
+            <span
+              >{{ item.product.name }} <span class="text-muted">x{{ item.quantity }}</span></span
+            >
+            <span>{{ item.product.price * item.quantity | currency }}</span>
           </div>
 
           <hr />
