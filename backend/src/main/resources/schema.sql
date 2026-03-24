@@ -6,7 +6,12 @@ CREATE TABLE users (
                        username VARCHAR(255) NOT NULL,
                        password VARCHAR(255) NOT NULL,
                        email VARCHAR(255) NOT NULL UNIQUE,
-                       role VARCHAR(50) NOT NULL
+                       first_name VARCHAR(255),
+                       last_name VARCHAR(255),
+                       address VARCHAR(255),
+                       join_date DATE,
+                       role VARCHAR(50) NOT NULL,
+                       status VARCHAR(50)
 );
 
 CREATE TABLE orders (

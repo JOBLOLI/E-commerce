@@ -2,48 +2,46 @@ import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { User } from '../../models/user';
+import { FormsModule } from '@angular/forms';
+import { UserService } from '../../services/user-service';
 
 @Component({
   selector: 'app-account',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './accountPage.html',
-  styleUrl: './accountPage.css',
+  styleUrls: ['./accountPage.css'],
 })
 export class AccountPage {
   user = signal<User | null>(null);
-
   editing = signal(false);
-
   editUser = signal<User | null>(null);
+  error = signal('');
 
-  //To be re-implemented once the MVC backend exists. Will use a service layer
-  //ie: this.user.set(userService.getCurrentUser()(this.productId))
-
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private userService: UserService,
+  ) {
     const loggedIn = localStorage.getItem('loggedIn');
+    const userId = localStorage.getItem('userId');
 
-    if (!loggedIn) {
+    if (!loggedIn || !userId) {
       this.router.navigate(['/login']);
+    } else {
+      this.loadUser(+userId);
     }
-
-    this.loadSampleUser();
   }
 
-  loadSampleUser() {
-    this.user.set({
-      id: 1,
-      username: 'jdoe',
-      password: 'password',
-      email: 'jdoe@email.com',
-      firstName: 'John',
-      lastName: 'Doe',
-      address: '123 Main St, Montreal, QC',
-      joinDate: '2026-03-20',
-      role: 'USER',
-      status: 'ACTIVE',
-    });
+  async loadUser(userId: number) {
+    try {
+      const u = await this.userService.getUserById(userId);
+      this.user.set(u);
+    } catch (err) {
+      console.error(err);
+      this.error.set('Failed to load account data.');
+    }
   }
+
   startEdit() {
     const current = this.user();
     if (current) {
@@ -56,22 +54,24 @@ export class AccountPage {
     this.editing.set(false);
   }
 
-  saveProfile() {
-    //to be re-implemented once the MVC backend exists. will use a service layer
-    //ie: this.userService.updateUser(updated).subscribe(u => {
-    //this.user.set(u);
-    //this.editing.set(false);
-    //})
-
+  async saveProfile() {
     const updated = this.editUser();
-    if (updated) {
-      this.user.set(updated);
+    if (!updated) return;
+
+    try {
+      const saved = await this.userService.updateUser(updated);
+      this.user.set(saved);
       this.editing.set(false);
+      this.error.set('');
+    } catch (err) {
+      console.error(err);
+      this.error.set('Failed to save changes.');
     }
   }
 
   logout() {
     localStorage.removeItem('loggedIn');
+    localStorage.removeItem('userId');
     this.router.navigate(['/login']);
   }
 }

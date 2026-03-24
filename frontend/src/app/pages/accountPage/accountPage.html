@@ -20,6 +20,8 @@
         <div class="card-header">Account Information</div>
 
         <div class="card-body">
+          <!-- ERROR MESSAGE -->
+          <p class="text-danger mt-2" *ngIf="error()">{{ error() }}</p>
           <!-- VIEW MODE -->
           <div *ngIf="!editing()">
             <p><strong>Username:</strong> {{ u.username }}</p>
@@ -27,7 +29,7 @@
             <p><strong>First Name:</strong> {{ u.firstName }}</p>
             <p><strong>Last Name:</strong> {{ u.lastName }}</p>
             <p><strong>Address:</strong> {{ u.address }}</p>
-            <p><strong>Member Since:</strong> {{ u.joinDate }}</p>
+            <p><strong>Member Since:</strong> {{ u.joinDate | date: 'longDate' }}</p>
 
             <button class="btn btn-primary" (click)="startEdit()">Edit Profile</button>
           </div>
