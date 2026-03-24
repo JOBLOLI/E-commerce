@@ -4,6 +4,7 @@ import { ActivatedRoute, ParamMap, RouterModule } from '@angular/router';
 import { Category } from '../../models/category';
 import { Product } from '../../models/product';
 import { switchMap } from 'rxjs/operators';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-product',
@@ -15,12 +16,26 @@ import { switchMap } from 'rxjs/operators';
 export class ProductPage {
   product = signal<Product | null>(null);
 
-  constructor(private route: ActivatedRoute) {
+  constructor(
+    private route: ActivatedRoute,
+    private cartService: CartService,
+  ) {
     // Subscribe to reload on route change ie product/1 to product/2
     this.route.paramMap.subscribe((params: ParamMap) => {
       const productId = params.get('id');
       this.loadProduct(productId);
     });
+  }
+
+  toastVisible = false;
+
+  addToCart() {
+    const p = this.product();
+    if (p) {
+      this.cartService.addToCart(p);
+      this.toastVisible = true;
+      setTimeout(() => (this.toastVisible = false), 2500); // auto-hides after 2.5s
+    }
   }
 
   //To be re-implemented once the MVC backend exists. Will use a service layer
