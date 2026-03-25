@@ -1,7 +1,7 @@
 <div class="container my-5">
   <h2>Login</h2>
 
-  <div class="card p-4">
+  <div class="card p-4 mb-4">
     <div class="mb-3">
       <label class="form-label">Username</label>
       <input class="form-control" (input)="username.set($any($event.target).value)" />
@@ -19,5 +19,48 @@
     <button class="btn btn-primary" (click)="login()">Login</button>
 
     <p class="text-danger mt-2">{{ error() }}</p>
+  </div>
+
+  <h2>Register</h2>
+
+  <div class="card p-4">
+    <div class="mb-3">
+      <label>Username</label>
+      <input class="form-control" (input)="username.set($any($event.target).value)" />
+    </div>
+
+    <div class="mb-3">
+      <label>First Name</label>
+      <input class="form-control" (input)="firstName.set($any($event.target).value)" />
+    </div>
+
+    <div class="mb-3">
+      <label>Last Name</label>
+      <input class="form-control" (input)="lastName.set($any($event.target).value)" />
+    </div>
+
+    <div class="mb-3">
+      <label>Email</label>
+      <input class="form-control" (input)="email.set($any($event.target).value)" />
+    </div>
+
+    <div class="mb-3">
+      <label>Address</label>
+      <input class="form-control" (input)="address.set($any($event.target).value)" />
+    </div>
+
+    <div class="mb-3">
+      <label>Password</label>
+      <input
+        type="password"
+        class="form-control"
+        (input)="password.set($any($event.target).value)"
+      />
+    </div>
+
+    <button class="btn btn-success" (click)="register()">Register</button>
+
+    <p class="text-success mt-2">{{ registerSuccess() }}</p>
+    <p class="text-danger mt-2">{{ registerError() }}</p>
   </div>
 </div>

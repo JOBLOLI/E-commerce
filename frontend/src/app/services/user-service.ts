@@ -21,4 +21,20 @@ export class UserService {
     const users = await firstValueFrom(this.http.get<User[]>(this.apiUrl));
     return users.find((u) => u.username === username);
   }
+
+  async register(user: any): Promise<any> {
+    const response = await fetch('http://localhost:8080/api/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to register');
+    }
+
+    return await response.json();
+  }
 }

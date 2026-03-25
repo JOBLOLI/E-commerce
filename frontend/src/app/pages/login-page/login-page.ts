@@ -14,6 +14,12 @@ export class LoginPage {
   username = signal('');
   password = signal('');
   error = signal('');
+  email = signal('');
+  registerError = signal('');
+  registerSuccess = signal('');
+  firstName = signal('');
+  lastName = signal('');
+  address = signal('');
 
   constructor(
     private router: Router,
@@ -32,6 +38,30 @@ export class LoginPage {
       }
     } catch (err) {
       this.error.set('Server error. Please try again.');
+      console.error(err);
+    }
+  }
+  async register() {
+    try {
+      const newUser = {
+        username: this.username(),
+        password: this.password(),
+        firstName: this.firstName(),
+        lastName: this.lastName(),
+        email: this.email(),
+        address: this.address(),
+      };
+
+      const createdUser = await this.userService.register(newUser);
+
+      localStorage.setItem('loggedIn', 'true');
+      localStorage.setItem('userId', createdUser.id.toString());
+
+      localStorage.setItem('username', createdUser.username);
+
+      this.router.navigate(['/account']);
+    } catch (err) {
+      this.registerError.set('Registration failed. Email may already exist.');
       console.error(err);
     }
   }

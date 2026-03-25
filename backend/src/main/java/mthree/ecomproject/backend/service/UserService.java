@@ -28,6 +28,15 @@ public class UserService {
 
     // CREATE
     public User createUser(User user) {
+
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new RuntimeException("Email already in use");
+        }
+
+        if (userRepository.existsByUsername(user.getUsername())) {
+            throw new RuntimeException("Username already taken");
+        }
+
         // Optional: set defaults
         if (user.getStatus() == null) {
             user.setStatus("ACTIVE");
@@ -36,6 +45,9 @@ public class UserService {
         if (user.getJoinDate() == null) {
             user.setJoinDate(java.time.LocalDate.now());
         }
+
+        user.setRole("USER"); // enforce default role
+        //Admin role must be done manually, not at registration
 
         return userRepository.save(user);
     }
