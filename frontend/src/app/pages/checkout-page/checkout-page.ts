@@ -27,8 +27,9 @@ export class CheckoutPage {
   }
 
   placeOrder() {
+    const userId = localStorage.getItem('userId') || '1';
     const orderRequest = {
-      userId: 1, // hardcoded for now until auth is implemented
+      userId: +userId,
       items: this.cartItems().map((i) => ({
         productId: i.product.id,
         productName: i.product.name,
@@ -42,9 +43,7 @@ export class CheckoutPage {
         this.cartService.clearCart();
         this.router.navigate(['/history']);
       },
-      error: (err) => {
-        console.error('Order failed', err);
-      },
+      error: (err) => console.error('Order failed', err),
     });
   }
 }

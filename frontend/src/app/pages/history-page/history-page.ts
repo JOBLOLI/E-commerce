@@ -24,9 +24,9 @@ export class HistoryPage implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.http.get<OrderHistoryItem[]>('http://localhost:8080/api/orders/1').subscribe({
+    const userId = localStorage.getItem('userId') || '1';
+    this.http.get<OrderHistoryItem[]>(`http://localhost:8080/api/orders/${userId}`).subscribe({
       next: (data) => {
-        // Group items by orderId
         const grouped = data.reduce((acc: any, item) => {
           if (!acc[item.orderId]) {
             acc[item.orderId] = {
