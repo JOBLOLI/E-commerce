@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Product } from '../../models/product';
 import { Category } from '../../models/category';
 import { RouterModule } from '@angular/router';
+import { ProductService } from '../../services/product-service';
 
 @Component({
   selector: 'app-home',
@@ -12,40 +13,21 @@ import { RouterModule } from '@angular/router';
   styleUrl: './homePage.css',
 })
 export class HomePage {
-  featuredProducts = signal<Product[]>([
-    {
-      id: 1,
-      name: 'Laptop',
-      description: '',
-      price: 2499.99,
-      rating: 4.5,
-      imageUrl: 'https://picsum.photos/seed/laptop/400/250',
-      categories: [],
-    },
-    {
-      id: 2,
-      name: 'Keyboard',
-      description: '',
-      price: 129.99,
-      rating: 4,
-      imageUrl: 'https://picsum.photos/seed/keyboard/400/250',
-      categories: [],
-    },
-    {
-      id: 3,
-      name: 'Headphones',
-      description: '',
-      price: 199.99,
-      rating: 5,
-      imageUrl: 'https://picsum.photos/seed/headphones/400/250',
-      categories: [],
-    },
-  ]);
+  constructor(private productService: ProductService) {
+    this.loadProducts();
+  }
 
-  categories = signal<Category[]>([
-    { id: 1, name: 'Electronics', description: 'Electronics' },
-    { id: 2, name: 'Computers', description: 'Laptops & PCs' },
-    { id: 3, name: 'Audio', description: 'Headphones & speakers' },
-    { id: 4, name: 'Accessories', description: 'Cables & peripherals' },
-  ]);
+  products = signal<Product[]>([]);
+
+  //Default loads first 3 products from product list, might update to add "filteredProducts"
+  //Maybe products can have a boolean isFeatured?
+  //Or a seperate table of featuredProducts which references product ids.
+  loadProducts() {
+    this.productService.getProducts({}).subscribe({
+      next: (data) => {
+        this.products.set(data.slice(0, 3));
+      },
+      error: (err) => console.error('Failed to load products', err),
+    });
+  }
 }

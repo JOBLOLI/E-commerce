@@ -1,10 +1,9 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, ParamMap, RouterModule } from '@angular/router';
-import { Category } from '../../models/category';
 import { Product } from '../../models/product';
-import { switchMap } from 'rxjs/operators';
 import { CartService } from '../../services/cart.service';
+import { ProductService } from '../../services/product-service';
 
 @Component({
   selector: 'app-product',
@@ -19,11 +18,14 @@ export class ProductPage {
   constructor(
     private route: ActivatedRoute,
     private cartService: CartService,
+    private productService: ProductService,
   ) {
-    // Subscribe to reload on route change ie product/1 to product/2
     this.route.paramMap.subscribe((params: ParamMap) => {
-      const productId = params.get('id');
-      this.loadProduct(productId);
+      const id = Number(params.get('id'));
+
+      if (!isNaN(id)) {
+        this.loadProduct(id);
+      }
     });
   }
 
@@ -38,38 +40,10 @@ export class ProductPage {
     }
   }
 
-  //To be re-implemented once the MVC backend exists. Will use a service layer
-  //ie: this.product.set(productService.getProductById(this.productId))
-
-  loadProduct(productId: string | null) {
-    // Fake categories
-    const fakeCategories: Category[] = [
-      { id: 1, name: 'Electronics', description: 'Electronics' },
-      { id: 2, name: 'Computers', description: 'Laptops, PCs' },
-    ];
-
-    if (productId === '1') {
-      this.product.set({
-        id: 1,
-        name: 'Laptop',
-        description: 'This is a laptop',
-        price: 2499.99,
-        rating: 4.5,
-        imageUrl: 'https://picsum.photos/seed/laptop/400/250',
-        categories: [fakeCategories[0], fakeCategories[1]],
-      });
-    } else if (productId === '2') {
-      this.product.set({
-        id: 2,
-        name: 'Keyboard',
-        description: 'This is a keyboard',
-        price: 129.99,
-        rating: 4,
-        imageUrl: 'https://picsum.photos/seed/keyboard/400/250',
-        categories: [fakeCategories[0]],
-      });
-    } else {
-      this.product.set(null);
-    }
+  loadProduct(id: number) {
+    this.productService.getProductById(id).subscribe({
+      next: (data) => this.product.set(data),
+      error: () => this.product.set(null),
+    });
   }
 }

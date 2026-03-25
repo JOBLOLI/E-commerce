@@ -4,12 +4,16 @@
   <a routerLink="/search" class="btn btn-primary btn-lg">Shop Now</a>
 </div>
 <div class="row px-4">
-  <div class="col-md-4 mb-3" *ngFor="let p of featuredProducts()">
+  <div class="col-md-4 mb-4" *ngFor="let p of products()">
     <div class="card h-100">
-      <img [src]="p.imageUrl" class="card-img-top" [alt]="p.name" />
+      <img [src]="p.imageUrl" class="card-img-top" />
       <div class="card-body">
         <h5 class="card-title">{{ p.name }}</h5>
-        <p class="card-text">{{ p.price | currency }}</p>
+        <p class="card-text">{{ p.description }}</p>
+        <p>⭐ {{ p.rating }}</p>
+        <p>
+          <strong>{{ p.price | currency }}</strong>
+        </p>
         <a [routerLink]="['/product', p.id]" class="btn btn-primary">View Product</a>
       </div>
     </div>
