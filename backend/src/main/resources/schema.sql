@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS order_history;
 DROP TABLE IF EXISTS order_items;
 DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS product_category;
 DROP TABLE IF EXISTS products;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS users;
@@ -30,9 +31,19 @@ CREATE TABLE products (
                           description VARCHAR(500),
                           price DECIMAL(10, 2) NOT NULL,
                           image VARCHAR(500),
+                          image_url VARCHAR(500),
                           category_id BIGINT,
                           review VARCHAR(500),
+                          rating DECIMAL(3,2),
                           FOREIGN KEY (category_id) REFERENCES categories(category_id)
+);
+
+CREATE TABLE product_category (
+                                  product_id BIGINT NOT NULL,
+                                  category_id BIGINT NOT NULL,
+                                  PRIMARY KEY (product_id, category_id),
+                                  FOREIGN KEY (product_id) REFERENCES products(product_id),
+                                  FOREIGN KEY (category_id) REFERENCES categories(category_id)
 );
 
 CREATE TABLE orders (

@@ -1,6 +1,15 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+
+interface OrderHistoryItem {
+  orderHistoryId: number;
+  orderId: number;
+  userId: number;
+  itemName: string;
+  price: number;
+}
 
 @Component({
   selector: 'app-history-page',
@@ -9,43 +18,44 @@ import { RouterModule } from '@angular/router';
   templateUrl: './history-page.html',
   styleUrl: './history-page.css',
 })
-export class HistoryPage {
-  orders = signal([
-    {
-      id: 1001,
-      date: '2026-01-15',
-      status: 'Delivered',
-      total: 2629.98,
-      items: [
-        { name: 'Laptop', price: 2499.99 },
-        { name: 'Keyboard', price: 129.99 },
-      ],
-    },
-    {
-      id: 1002,
-      date: '2026-02-20',
-      status: 'Shipped',
-      total: 199.99,
-      items: [{ name: 'Headphones', price: 199.99 }],
-    },
-    {
-      id: 1003,
-      date: '2026-03-10',
-      status: 'Processing',
-      total: 129.99,
-      items: [{ name: 'Keyboard', price: 129.99 }],
-    },
-  ]);
+export class HistoryPage implements OnInit {
+  orders = signal<any[]>([]);
+
+  constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.http.get<OrderHistoryItem[]>('http://localhost:8080/api/orders/1').subscribe({
+      next: (data) => {
+        // Group items by orderId
+        const grouped = data.reduce((acc: any, item) => {
+          if (!acc[item.orderId]) {
+            acc[item.orderId] = {
+              id: item.orderId,
+              status: 'PROCESSING',
+              items: [],
+              total: 0,
+            };
+          }
+          acc[item.orderId].items.push({ name: item.itemName, price: item.price });
+          acc[item.orderId].total += item.price;
+          return acc;
+        }, {});
+
+        this.orders.set(Object.values(grouped));
+      },
+      error: (err) => console.error('Failed to load order history', err),
+    });
+  }
 
   getStatusClass(status: string): string {
     switch (status) {
-      case 'Delivered':
+      case 'DELIVERED':
         return 'badge bg-success';
-      case 'Shipped':
+      case 'SHIPPED':
         return 'badge bg-primary';
-      case 'Processing':
+      case 'PROCESSING':
         return 'badge bg-warning text-dark';
-      case 'Cancelled':
+      case 'CANCELLED':
         return 'badge bg-danger';
       default:
         return 'badge bg-secondary';
